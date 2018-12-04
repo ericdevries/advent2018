@@ -2,7 +2,7 @@ from collections import namedtuple
 import re
 import numpy
 import datetime
-from operator import attrgetter
+from operator import attrgetter, itemgetter
 from dataclasses import dataclass
 
 with open('d4input.txt') as f:
@@ -98,9 +98,16 @@ print('most asleep is %s' % (sorted_list[-1][0]))
 
 result  = get_most_frequent_minute(sorted_list[-1][0], events)
 
+results = []
+
 for g in guard_ids:
     res = get_most_frequent_minute(g, events)
     print('guard %s argmax %s - %s' % (g, res.argmax(), res.max()))
 
+    results.append((g, res.argmax(), res.max(),))
 
-import pdb; pdb.set_trace()
+results = sorted(results, key=itemgetter(2))
+
+winner = results[-1]
+print('winner is', winner)
+print('answer is', int(winner[0]) * winner[1])
